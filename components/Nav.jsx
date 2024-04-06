@@ -5,14 +5,17 @@ import { useState, useEffect } from "react"
 import {signIn, signOut, useSession, getProviders } from 'next-auth/react'
 const Nav = () => {
 
-  const isUserLoggedIn = true;
+  const { data: session } = useSession()
+
   const [providers, setProviders] = useState(null)
+  const [toogleDropDown, settoogleDropDown] = useState(false)
+
   useEffect(() => {
-    const setProviders = async () =>{
+    const setUpProviders = async () =>{
       const response = await getProviders()
       setProviders(response)
     }
-    setProviders();
+    setUpProviders();
   },[])
   
   return (
@@ -22,8 +25,9 @@ const Nav = () => {
         <p className="logo_text">Promtopia</p>
       </Link>
 
+
       <div className="sm:flex hidden">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href="/create-prompt" className="black_btn">
               Create Post
@@ -33,7 +37,7 @@ const Nav = () => {
               Sign Out
             </button>
             <Link href="/profile">
-              <Image src="assets/images/logo.svg" width={37} height={37} alt="Profile Icon"/>
+              <Image src={session?.user.image} width={37} height={37} alt="Profile Icon"/>
             </Link>
 
           </div>
@@ -51,9 +55,16 @@ const Nav = () => {
 
       { /*/ Mobile menu */}
       <div className="sm:hidden flex relative">
-          {isUserLoggedIn ?(
+          {session?.user ?(
             <div className="flex">
-            <Image src="assets/images/logo.svg" width={37} height={37} alt="Profile Icon" onClick={() =>{}}/>
+            <Image src={session?.user.image} width={37} height={37} alt="Profile Icon" onClick={() => settoogleDropDown((prev) => !prev)}/>
+            {toogleDropDown && (
+              <div className="dropdown">
+                <Link href="/profile" className="dropdown_link" onClick={() => settoogleDropDown (false)}>My Profile</Link>
+                <Link href="/create-prompt" className="dropdown_link" onClick={() => settoogleDropDown (false)}>Create Prompt</Link>
+                <button type="button" onClick={() => {settoogleDropDown(false); signOut()}} className="mt-5 w-full black_btn">Sign Out</button>
+              </div>
+            )}
             </div>
           ):(
             <>
