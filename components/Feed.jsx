@@ -8,7 +8,7 @@ const PromptCardList = ({data, handleTagClick }) => {
   return (
     <div className="mt-16 prompt_layout">
       {data.map((post) =>(
-        <PromptCard key = {post._id} post={post} handleTagClick />
+        <PromptCard key = {post._id} post={post} handleTagClick= {handleTagClick}/>
       ))}
     </div>
   )
@@ -16,7 +16,7 @@ const PromptCardList = ({data, handleTagClick }) => {
 
 const Feed = () => {
 
-  const [searchText, setsearchText] = useState('');
+  const [searchText, setSearchText] = useState('');
   const [posts, setPosts] = useState([])
   const handleSearchChange = (e) => {
 
