@@ -4,7 +4,7 @@ const https = require('https');
 https.globalAgent.options.rejectUnauthorized = false;
 
 import Nav from '@components/Nav'
-import Provider from "@Components/Provider"
+import Provider from "@components/Provider"
 
 export const metadata = {
     title: "Promtopia",
